@@ -5,7 +5,6 @@ import { auth } from "../../firebase/firebase.utils";
 
 import "./header.styles.scss";
 
-function handleClick(currentUser) {}
 const Header = ({ currentUser }) => (
   <div className="header">
     <Link className="logo-container" to="/">
@@ -21,10 +20,7 @@ const Header = ({ currentUser }) => (
       {currentUser ? (
         <div
           className="option"
-          onClick={() => {
-            console.log(currentUser);
-            auth.signOut();
-          }}
+          onClick={() => auth.signOut()}
         >
           SIGN OUT
         </div>
