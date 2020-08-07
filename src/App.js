@@ -12,9 +12,14 @@ import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import CheckoutPage from './pages/checkout/checkout.component';
 
-
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import {
+  auth,
+  createUserProfileDocument,
+  // addCollectionAndDocuments,
+} from './firebase/firebase.utils';
 import { selectCurrentUser } from './redux/user/user.selectors';
+
+// import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
@@ -29,9 +34,11 @@ class App extends React.Component {
         (await userRef).onSnapshot((snapShot) => {
           setCurrentUser({ id: snapShot.id, ...snapShot.data() });
         });
-      } else {
-        setCurrentUser(userAuth);
       }
+      //  else {
+      setCurrentUser(userAuth);
+      // addCollectionAndDocuments('collections', collectionsArray.map(({title, items}) => ({title, items})));
+      // }
     });
   }
 
@@ -46,7 +53,15 @@ class App extends React.Component {
         <Route exact path='/' component={HomePage} />
         <Route path='/shop' component={ShopPage} />
         <Route path='/checkout' component={CheckoutPage} />
-        <Route path='/signin' render={() => this.props.currentUser ? ( <Redirect to='/' /> ) : ( <SignInAndSignUpPage /> )}
+        <Route
+          path='/signin'
+          render={() =>
+            this.props.currentUser ? (
+              <Redirect to='/' />
+            ) : (
+              <SignInAndSignUpPage />
+            )
+          }
         />
       </div>
     );
@@ -54,7 +69,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
+  // collectionsArray: selectCollectionsForPreview,
 });
 
 const mapDispatchToProps = (dispatch) => ({
